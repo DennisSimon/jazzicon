@@ -1,38 +1,45 @@
 import MersenneTwister from "mersenne-twister";
 import { genColor, hueShift } from "./colors";
-import newPaper from "./paper";
-import { colors } from "./types";
+import { newDivPaper, newSvgPaper } from "./paper";
+import { colors, svgns } from "./types";
 
 const shapeCount = 4 as const;
-const svgns = "http://www.w3.org/2000/svg" as const;
 
-export default function generateIdenticon(
+function generateSvg(
   diameter: number,
-  seed: number
-): HTMLDivElement {
-  const generator = new MersenneTwister(seed);
-  let remainingColors = [...colors] as string[];
-  remainingColors = hueShift(remainingColors.slice(), generator);
-
-  const { color: colorToUse, usedIdx } = genColor(remainingColors, generator);
-  remainingColors.splice(usedIdx, 1);
-
-  const elements = newPaper(diameter, colorToUse);
-  const container = elements.container;
-
+  remainingColors: string[],
+  generator: MersenneTwister
+): SVGSVGElement {
   const svg = document.createElementNS(svgns, "svg");
   svg.setAttributeNS(null, "x", "0");
   svg.setAttributeNS(null, "y", "0");
   svg.setAttributeNS(null, "width", `${diameter}`);
   svg.setAttributeNS(null, "height", `${diameter}`);
 
-  container.appendChild(svg);
-
   for (let i = 0; i < shapeCount - 1; i++) {
     genShape(remainingColors, diameter, i, shapeCount - 1, svg, generator);
   }
+  return svg;
+}
 
-  return container;
+export function generateDataUrl(diameter: number, seed: number) {
+  const generator = new MersenneTwister(seed);
+
+  let remainingColors = [...colors] as string[];
+  remainingColors = hueShift(remainingColors.slice(), generator);
+
+  const { color: colorToUse, usedIdx } = genColor(remainingColors, generator);
+  remainingColors.splice(usedIdx, 1);
+
+  const elements = newSvgPaper(diameter, colorToUse);
+  const container = elements.container;
+
+  const svg = generateSvg(diameter, remainingColors, generator);
+  container.appendChild(svg);
+
+  return `data:image/svg+xml,${encodeURIComponent(
+    container.outerHTML.toString()
+  )}`;
 }
 
 function genShape(

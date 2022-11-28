@@ -1,5 +1,5 @@
-export type Paper = {
-  container: HTMLDivElement;
+export type Paper<T extends HTMLElement | SVGSVGElement> = {
+  container: T;
 };
 
 export type HSL = {
@@ -22,3 +22,4 @@ export const colors = [
 ] as const;
 
 export const wobble = 30 as const;
+export const svgns = "http://www.w3.org/2000/svg" as const;

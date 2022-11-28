@@ -1,7 +1,27 @@
-import { Paper } from "./types";
+import { Paper, svgns } from "./types";
 
-export default function newPaper(diameter: number, color: string): Paper {
-  var container = document.createElement("div");
+export function newDivPaper(
+  diameter: number,
+  color: string
+): Paper<HTMLDivElement> {
+  const container = document.createElement("div");
+  attachStyles(container, diameter, color);
+  return { container };
+}
+export function newSvgPaper(
+  diameter: number,
+  color: string
+): Paper<SVGSVGElement> {
+  const container = document.createElementNS(svgns, "svg");
+  attachStyles(container, diameter, color);
+  return { container };
+}
+
+function attachStyles(
+  container: HTMLElement | SVGSVGElement,
+  diameter: number,
+  color: string
+) {
   container.style.borderRadius = "50px";
   container.style.overflow = "hidden";
   container.style.padding = "0px";
@@ -10,7 +30,4 @@ export default function newPaper(diameter: number, color: string): Paper {
   container.style.height = "" + diameter + "px";
   container.style.display = "inline-block";
   container.style.background = color;
-  return {
-    container: container,
-  };
 }
