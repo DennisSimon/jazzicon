@@ -25,7 +25,7 @@
     "access": "public"
   },
   "files": [
-    "*.js"
+    "dist/**/*.{ts,js}"
   ],
   "license": "ISC",
   "dependencies": {
