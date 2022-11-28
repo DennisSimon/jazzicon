@@ -1,7 +1,7 @@
-var jazzicon = require('./')
+var jazzicon = require("./dist/cjs");
 
-var body = document.querySelector('body')
-for(var i = 0; i < 600; i++) {
-  var el = jazzicon(100, i)
-  body.appendChild(el)
+var body = document.querySelector("body");
+for (var i = 0; i < 600; i++) {
+  var el = jazzicon(100, i);
+  body.appendChild(el);
 }

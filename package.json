@@ -2,10 +2,23 @@
   "name": "@metamask/jazzicon",
   "version": "2.1.0",
   "description": "Jazzy deterministic identicons for a more entertaining future",
-  "main": "index.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "beefy sample.js --live --open"
+    "start": "beefy sample.js --live --open",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "prepare": "npm build",
+    "prepack": "npm build",
+    "build": "npm run build:esm && npm run build:cjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -18,7 +31,11 @@
   "dependencies": {
     "mersenne-twister": "^1.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/mersenne-twister": "^1.1.2",
+    "beefy": "^2.1.8",
+    "typescript": "^4.9.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MetaMask/jazzicon.git"
