@@ -13,6 +13,7 @@ export function newSvgPaper(
   color: string
 ): Paper<SVGSVGElement> {
   const container = document.createElementNS(svgns, "svg");
+  container.setAttribute("xmlns", svgns);
   attachStyles(container, diameter, color);
   return { container };
 }
