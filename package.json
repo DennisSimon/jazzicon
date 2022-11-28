@@ -9,8 +9,8 @@
     "start": "beefy sample.js --live --open",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "prepare": "npm build",
-    "prepack": "npm build",
+    "prepare": "npm run build",
+    "prepack": "npm run build",
     "build": "npm run build:esm && npm run build:cjs"
   },
   "exports": {
